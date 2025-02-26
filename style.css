@@ -1,0 +1,32 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f0f0f0;
+  }
+  
+  #carroImagem {
+    width: 500px;
+    margin-bottom: 30px;
+  }
+  
+  button {
+    padding: 18px 27px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px;
+  }
+  @keyframes moverCarro {
+ 0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100px); /* Ajuste a distância do movimento */
+  }
+}
+
+.carro-movendo {
+  animation: moverCarro 1s linear; /* Nome, duração, tipo de animação */
+}
+.carro-ligado {
+  filter: sepia(100%) hue-rotate(50deg); /* Exemplo: tom sépia e mudança de cor */
+}
