@@ -5,30 +5,13 @@ class Carro {
       this.cor = cor;
       this.velocidade = 0; // Novo atributo
       this.ligado = false;
-    const estadoCarroElement = document.getElementById("estadoCarro"); // Obtém o elemento do estado do carr
     }
-        // ... (outros métodos)
-      }
-      function atualizarEstadoCarroNaTela() {
-        if (meuCarro.ligado) {
-          estadoCarroElement.textContent = "Ligado";
-        } else {
-          estadoCarroElement.textContent = "Desligado";
-        }
-      }
-
-      ligarButton.addEventListener("click", function() {
-        meuCarro.ligar();
-        atualizarEstadoVisual();
-        atualizarEstadoCarroNaTela(); // Atualiza o estado do carro na tela
-        tocarSom(somLigar);
-      });
-
-      
+  
     ligar() {
       if (!this.ligado) {
         this.ligado = true;
         console.log("Carro ligado!");
+        atualizarEstadoCarroNaTela(); // Atualiza o estado na tela ao ligar
       } else {
         console.log("O carro já está ligado.");
       }
@@ -39,12 +22,12 @@ class Carro {
         this.ligado = false;
         this.velocidade = 0; // Resetar a velocidade ao desligar
         atualizarVelocidadeNaTela();
+        atualizarEstadoCarroNaTela(); // Atualiza o estado na tela ao desligar
         console.log("Carro desligado!");
       } else {
         console.log("O carro já está desligado.");
       }
     }
-
   
     acelerar() {
       if (this.ligado) {
@@ -55,7 +38,7 @@ class Carro {
         console.log("O carro precisa estar ligado para acelerar.");
       }
     }
-  
+  }
   
   // Criando um objeto Carro
   const meuCarro = new Carro("Uno com Escada", "Prata");
@@ -67,6 +50,8 @@ class Carro {
   const ligarButton = document.getElementById("ligar");
   const desligarButton = document.getElementById("desligar");
   const acelerarButton = document.getElementById("acelerar");
+  const carroImagem = document.getElementById("carroImagem"); // Obtém a imagem do carro
+  const estadoCarroElement = document.getElementById("estadoCarro"); // Obtém o elemento do estado do carro
   
   // Exibindo informações do carro na tela
   modeloElement.textContent = meuCarro.modelo;
@@ -77,26 +62,33 @@ class Carro {
     velocidadeElement.textContent = meuCarro.velocidade;
   }
   
+  // Função para atualizar o texto do estado do carro
+  function atualizarEstadoCarroNaTela() {
+    if (meuCarro.ligado) {
+      estadoCarroElement.textContent = "Ligado";
+    } else {
+      estadoCarroElement.textContent = "Desligado";
+    }
+  }
+  
+  // Função para atualizar o estado visual do carro (cor da imagem)
+  function atualizarEstadoVisual() {
+    if (meuCarro.ligado) {
+      carroImagem.classList.add("carro-ligado"); // Adiciona a classe se o carro estiver ligado
+    } else {
+      carroImagem.classList.remove("carro-ligado"); // Remove a classe se o carro estiver desligado
+    }
+  }
+  
   // Adicionando listeners de evento aos botões
   ligarButton.addEventListener("click", function() {
     meuCarro.ligar();
+    atualizarEstadoVisual(); // Atualiza a cor da imagem
   });
   
   desligarButton.addEventListener("click", function() {
     meuCarro.desligar();
-  });
-  
-  acelerarButton.addEventListener("click", function() {
-    meuCarro.acelerar();
-  });
-ligarButton.addEventListener("click", function() {
-    meuCarro.ligar();
-    atualizarEstadoVisual();
-  });
-  
-  desligarButton.addEventListener("click", function() {
-    meuCarro.desligar();
-    atualizarEstadoVisual();
+    atualizarEstadoVisual(); // Atualiza a cor da imagem
   });
   
   acelerarButton.addEventListener("click", function() {
@@ -106,11 +98,7 @@ ligarButton.addEventListener("click", function() {
       carroImagem.classList.remove("carro-movendo");
     }, 1000); // 1000 milissegundos = 1 segundo (duração da animação)
   });
-  function atualizarEstadoVisual() {
-    if (meuCarro.ligado) {
-      carroImagem.classList.add("carro-ligado"); // Adiciona a classe se o carro estiver ligado
-    } else {
-      carroImagem.classList.remove("carro-ligado"); // Remove a classe se o carro estiver desligado
-    }
-    
-  }
+  
+  // Inicializa o estado do carro e a velocidade na tela
+  atualizarEstadoCarroNaTela();
+  atualizarVelocidadeNaTela();
