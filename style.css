@@ -1,65 +1,60 @@
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fonte mais moderna */
-  text-align: center;
-  background-color: #e6e6e6; /* Cor de fundo mais suave */
-  margin: 0; /* Remove margem padrão do body */
-  padding: 20px; /* Adiciona um pequeno espaço interno */
+  font-family: sans-serif;
 }
 
-h1 {
-  color: #333; /* Cor do título */
-  margin-bottom: 20px; /* Espaçamento abaixo do título */
-}
-
-#carroImagem {
-  width: 500px;
-  margin-bottom: 30px;
-  border-radius: 10px; /* Bordas arredondadas */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
-}
-
-p {
-  font-size: 18px; /* Tamanho da fonte dos parágrafos */
-  color: #555; /* Cor dos parágrafos */
-  margin-bottom: 10px; /* Espaçamento abaixo dos parágrafos */
+input[type="text"],
+input[type="number"] {
+  margin-bottom: 10px;
+  padding: 5px;
 }
 
 button {
-  padding: 18px 27px;
-  font-size: 16px;
+  padding: 8px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
   cursor: pointer;
-  margin: 10px;
-  background-color: #4CAF50; /* Cor de fundo do botão */
-  color: white; /* Cor do texto do botão */
-  border: none; /* Remove a borda padrão */
-  border-radius: 5px; /* Bordas arredondadas */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra suave */
-  transition: background-color 0.3s ease; /* Transição suave na cor de fundo */
 }
 
 button:hover {
-  background-color: #3e8e41; /* Cor de fundo no hover */
+  background-color: #3e8e41;
 }
 
-button:active {
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Sombra menor ao clicar */
-  transform: translateY(1px); /* Pequeno deslocamento ao clicar */
+/* Estilo geral para as seções dos veículos */
+.veiculo-container {
+  margin-bottom: 30px; /* Espaço entre as seções */
+  text-align: center; /* Centraliza o conteúdo */
 }
 
-@keyframes moverCarro {
+/* Estilo para o contêiner da imagem */
+.imagem-container {
+  margin-bottom: 15px; /* Espaço entre a imagem e as opções */
+}
+
+/* Estilo para a imagem */
+.veiculo-imagem {
+  width: 150px; /* Ajuste o tamanho da imagem conforme necessário */
+  height: auto;
+  border: 2px solid #ddd; /* Borda suave */
+  border-radius: 8px; /* Bordas arredondadas */
+  animation: moverImagem 5s linear infinite; /* Adiciona a animação */
+}
+
+/* Estilo para as informações do veículo */
+.veiculo-info {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Animação de movimento */
+@keyframes moverImagem {
   0% {
-    transform: translateX(0);
+    transform: translateX(0); /* Início: sem movimento */
+  }
+  50% {
+    transform: translateX(20px); /* Meio: move 20px para a direita */
   }
   100% {
-    transform: translateX(50px); /* Ajuste a distância do movimento (diminuí para ser mais sutil) */
+    transform: translateX(0); /* Fim: retorna à posição original */
   }
-}
-
-.carro-movendo {
-  animation: moverCarro 0.5s linear; /* Nome, duração, tipo de animação (diminuí a duração) */
-}
-
-.carro-ligado {
-  filter: sepia(50%) hue-rotate(30deg); /* Efeito mais sutil */
-  transition: filter 0.5s ease; /* Transição suave no filtro */
 }
