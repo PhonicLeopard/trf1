@@ -1,62 +1,124 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-  <title>Herança em JavaScript</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garagem Inteligente - Polimorfismo</title>
+    <!-- Link para o CSS externo -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Herança em JavaScript</h1>
 
-  <h2>Carro Comum</h2>
-  <img src="OIP.jpg">
-  <label for="modeloCarro">Modelo:</label>
-  <input type="text" id="modeloCarro" value="Sedan">
-  <label for="corCarro">Cor:</label>
-  <input type="text" id="corCarro" value="Cinza">
-  <input type="text" id="imagemCarro"><br><br>
-  <button onclick="criarCarro()">Criar Carro</button>
-  <button onclick="ligarCarro()">Ligar Carro</button>
-  <button onclick="acelerarCarro()">Acelerar Carro</button>
-  <button onclick="frearCarro()">Frear Carro</button>
-  <button onclick="buzinarCarro()">Buzinar</button>
-  <p id="statusCarro"></p>
+    <h1>Garagem Inteligente - Polimorfismo</h1>
 
-  <h2>Carro Esportivo</h2>
-  <img src="OIP (1).jpg"></img>
-  <label for="modeloEsportivo">Modelo:</label>
-  <input type="text" id="modeloEsportivo" value="Ferrari">
-  <label for="corEsportivo">Cor:</label>
-  <input type="text" id="corEsportivo" value="Vermelha">
-  <input type="text" id="imagemEsportivo">
-  <button onclick="criarCarroEsportivo()">Criar Carro Esportivo</button>
-  <button onclick="ligarCarroEsportivo()">Ligar Carro Esportivo</button>
-  <button onclick="acelerarCarroEsportivo()">Acelerar Carro Esportivo</button>
-  <button onclick="frearCarroEsportivo()">Frear Carro Esportivo</button>
-  <button onclick="ativarTurbo()">Ativar Turbo</button>
-  <button onclick="desativarTurbo()">Desativar Turbo</button>
-  <button onclick="buzinarCarroEsportivo()">Buzinar</button>
-  <p id="statusCarroEsportivo"></p>
+    <!-- Seção para Demonstração do Polimorfismo -->
+    <div id="polymorphism-demo">
+        <h2>Demonstração de Polimorfismo</h2>
+        <p>Crie ou interaja com um veículo abaixo. A função <code>interagir()</code> chamará o método correto!</p>
+        <button id="btnInfoCarro">Mostrar Info Carro Comum</button>
+        <button id="btnInfoEsportivo">Mostrar Info Carro Esportivo</button>
+        <button id="btnInfoCaminhao">Mostrar Info Caminhão</button>
 
-  <h2>Caminhão</h2>
-  <img src="6"></img>
-  <label for="modeloCaminhao">Modelo:</label>
-  <input type="text" id="modeloCaminhao" value="Volvo"><br><br>
-  <label for="corCaminhao">Cor:</label>
-  <input type="text" id="corCaminhao" value="Azul"><br><br>
-  <label for="capacidadeCarga">Capacidade de Carga (kg):</label>
-  <input type="number" id="capacidadeCarga" value="10000"><br><br>
+        <h3>Informações Atuais:</h3>
+        <div id="informacoesVeiculo">
+            Crie um veículo e interaja com ele para ver os detalhes aqui.
+        </div>
+    </div>
 
-  <input type="text" id="imagemCaminhao"><br><br>
-  <button onclick="criarCaminhao()">Criar Caminhão</button><br><br>
-  <button onclick="ligarCaminhao()">Ligar Caminhão</button>
-  <button onclick="acelerarCaminhao()">Acelerar Caminhão</button>
-  <button onclick="frearCaminhao()">Frear Caminhão</button>
-  <label for="pesoCarga">Peso da Carga (kg):</label>
-  <input type="number" id="pesoCarga" value="1000"><br><br>
-  <button onclick="carregarCaminhao()">Carregar Caminhão</button>
-  <button onclick="buzinarCaminhao()">Buzinar</button>
-  <p id="statusCaminhao"></p>
+    <!-- Seção Carro Comum -->
+    <div class="vehicle-section">
+        <h2>Carro Comum</h2>
+        <img id="imgCarro" src="OIP.jpg" alt="Carro Comum" class="veiculo-imagem">
+        <div class="input-container">
+            <label for="modeloCarro">Modelo:</label>
+            <input type="text" id="modeloCarro" value="Sedan">
+        </div>
+        <div class="input-container">
+            <label for="corCarro">Cor:</label>
+            <input type="text" id="corCarro" value="Cinza">
+        </div>
+        <div class="input-container">
+            <label for="imagemCarro">Imagem URL:</label>
+            <input type="text" id="imagemCarro" value="OIP.jpg" onchange="atualizarImagem('imgCarro', this.value)">
+        </div>
+        <div class="button-container">
+            <button onclick="criarCarro()">Criar/Atualizar</button>
+            <!-- Chamando interagir() -->
+            <button onclick="interagir(carro, 'ligar')">Ligar</button>
+            <button onclick="interagir(carro, 'desligar')">Desligar</button>
+            <button onclick="interagir(carro, 'acelerar', 10)">Acelerar (+10)</button> <!-- Passa argumento -->
+            <button onclick="interagir(carro, 'frear', 10)">Frear (-10)</button>   <!-- Passa argumento -->
+            <button onclick="interagir(carro, 'buzinar')">Buzinar</button>
+        </div>
+    </div>
 
-  <script src="script.js"></script>
+    <!-- Seção Carro Esportivo -->
+    <div class="vehicle-section">
+        <h2>Carro Esportivo</h2>
+        <img id="imgEsportivo" src="OIP (1).jpg" alt="Carro Esportivo" class="veiculo-imagem">
+        <div class="input-container">
+            <label for="modeloEsportivo">Modelo:</label>
+            <input type="text" id="modeloEsportivo" value="Ferrari F8">
+        </div>
+        <div class="input-container">
+            <label for="corEsportivo">Cor:</label>
+            <input type="text" id="corEsportivo" value="Vermelha">
+        </div>
+        <div class="input-container">
+            <label for="imagemEsportivo">Imagem URL:</label>
+            <input type="text" id="imagemEsportivo" value="OIP (1).jpg" onchange="atualizarImagem('imgEsportivo', this.value)">
+        </div>
+        <div class="button-container">
+            <button onclick="criarCarroEsportivo()">Criar/Atualizar</button>
+             <!-- Chamando interagir() -->
+            <button onclick="interagir(carroEsportivo, 'ligar')">Ligar</button>
+            <button onclick="interagir(carroEsportivo, 'desligar')">Desligar</button>
+            <button onclick="interagir(carroEsportivo, 'acelerar', 30)">Acelerar (+30)</button>
+            <button onclick="interagir(carroEsportivo, 'frear', 15)">Frear (-15)</button>
+            <button onclick="interagir(carroEsportivo, 'ativarTurbo')">Ativar Turbo</button>
+            <button onclick="interagir(carroEsportivo, 'desativarTurbo')">Desativar Turbo</button>
+            <button onclick="interagir(carroEsportivo, 'buzinar')">Buzinar</button>
+        </div>
+    </div>
+
+    <!-- Seção Caminhão -->
+    <div class="vehicle-section">
+        <h2>Caminhão</h2>
+        <img id="imgCaminhao" src="oip2.jpg" alt="Caminhão" class="veiculo-imagem">
+        <div class="input-container">
+            <label for="modeloCaminhao">Modelo:</label>
+            <input type="text" id="modeloCaminhao" value="Scania R450">
+        </div>
+        <div class="input-container">
+            <label for="corCaminhao">Cor:</label>
+            <input type="text" id="corCaminhao" value="Branco">
+        </div>
+         <div class="input-container">
+            <label for="imagemCaminhao">Imagem URL:</label>
+            <input type="text" id="imagemCaminhao" value="oip2.jpg" onchange="atualizarImagem('imgCaminhao', this.value)">
+        </div>
+        <div class="input-container">
+            <label for="capacidadeCarga">Capacidade (kg):</label>
+            <input type="number" id="capacidadeCarga" value="25000">
+        </div>
+        <div class="input-container">
+            <label for="pesoCarga">Peso Carga/Descarga (kg):</label>
+            <input type="number" id="pesoCarga" value="5000">
+        </div>
+        <div class="button-container">
+            <button onclick="criarCaminhao()">Criar/Atualizar</button>
+             <!-- Chamando interagir() -->
+            <button onclick="interagir(caminhao, 'ligar')">Ligar</button>
+            <button onclick="interagir(caminhao, 'desligar')">Desligar</button>
+            <button onclick="interagir(caminhao, 'acelerar', 5)">Acelerar (+5)</button>
+            <button onclick="interagir(caminhao, 'frear', 5)">Frear (-5)</button>
+            <!-- Passando o valor do input no momento do clique -->
+            <button onclick="interagir(caminhao, 'carregar', document.getElementById('pesoCarga').value)">Carregar</button>
+            <button onclick="interagir(caminhao, 'descarregar', document.getElementById('pesoCarga').value)">Descarregar</button>
+            <button onclick="interagir(caminhao, 'buzinar')">Buzinar</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
