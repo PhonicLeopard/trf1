@@ -3,122 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garagem Inteligente - Polimorfismo</title>
-    <!-- Link para o CSS externo -->
+    <title>Garagem Inteligente PRO</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Favicon (opcional) -->
+    <!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
 </head>
 <body>
 
-    <h1>Garagem Inteligente - Polimorfismo</h1>
+    <!-- Cabeçalho Principal -->
+    <header class="main-header">
+        <h1>Garagem Inteligente PRO 🚗💨</h1>
+        <p>Gerenciamento de Veículos, Manutenções e Agendamentos</p>
+    </header>
 
-    <!-- Seção para Demonstração do Polimorfismo -->
-    <div id="polymorphism-demo">
-        <h2>Demonstração de Polimorfismo</h2>
-        <p>Crie ou interaja com um veículo abaixo. A função <code>interagir()</code> chamará o método correto!</p>
-        <button id="btnInfoCarro">Mostrar Info Carro Comum</button>
-        <button id="btnInfoEsportivo">Mostrar Info Carro Esportivo</button>
-        <button id="btnInfoCaminhao">Mostrar Info Caminhão</button>
+    <!-- Conteúdo Principal -->
+    <main class="container">
 
-        <h3>Informações Atuais:</h3>
-        <div id="informacoesVeiculo">
-            Crie um veículo e interaja com ele para ver os detalhes aqui.
-        </div>
-    </div>
+        <!-- Painel de Informações do Veículo Selecionado -->
+        <section id="info-display-section" aria-labelledby="info-display-heading">
+            <h2 id="info-display-heading">Painel do Veículo Selecionado</h2>
+            <div id="informacoesVeiculo" class="info-panel" aria-live="assertive" aria-atomic="true">
+                <!-- Conteúdo será gerado pelo JavaScript -->
+                <p class="placeholder">Selecione um veículo acima ou crie um novo abaixo.</p>
+            </div>
+        </section>
 
-    <!-- Seção Carro Comum -->
-    <div class="vehicle-section">
-        <h2>Carro Comum</h2>
-        <img id="imgCarro" src="OIP.jpg" alt="Carro Comum" class="veiculo-imagem">
-        <div class="input-container">
-            <label for="modeloCarro">Modelo:</label>
-            <input type="text" id="modeloCarro" value="Sedan">
-        </div>
-        <div class="input-container">
-            <label for="corCarro">Cor:</label>
-            <input type="text" id="corCarro" value="Cinza">
-        </div>
-        <div class="input-container">
-            <label for="imagemCarro">Imagem URL:</label>
-            <input type="text" id="imagemCarro" value="OIP.jpg" onchange="atualizarImagem('imgCarro', this.value)">
-        </div>
-        <div class="button-container">
-            <button onclick="criarCarro()">Criar/Atualizar</button>
-            <!-- Chamando interagir() -->
-            <button onclick="interagir(carro, 'ligar')">Ligar</button>
-            <button onclick="interagir(carro, 'desligar')">Desligar</button>
-            <button onclick="interagir(carro, 'acelerar', 10)">Acelerar (+10)</button> <!-- Passa argumento -->
-            <button onclick="interagir(carro, 'frear', 10)">Frear (-10)</button>   <!-- Passa argumento -->
-            <button onclick="interagir(carro, 'buzinar')">Buzinar</button>
-        </div>
-    </div>
+        <!-- Seleção Rápida de Veículo -->
+        <section id="quick-select-section" aria-labelledby="quick-select-heading">
+             <h3 id="quick-select-heading">Seleção Rápida</h3>
+             <div class="button-container quick-select-buttons">
+                 <button id="btnInfoCarro" class="btn btn-select">Ver Carro Comum</button>
+                 <button id="btnInfoEsportivo" class="btn btn-select">Ver Carro Esportivo</button>
+                 <button id="btnInfoCaminhao" class="btn btn-select">Ver Caminhão</button>
+             </div>
+        </section>
 
-    <!-- Seção Carro Esportivo -->
-    <div class="vehicle-section">
-        <h2>Carro Esportivo</h2>
-        <img id="imgEsportivo" src="OIP (1).jpg" alt="Carro Esportivo" class="veiculo-imagem">
-        <div class="input-container">
-            <label for="modeloEsportivo">Modelo:</label>
-            <input type="text" id="modeloEsportivo" value="Ferrari F8">
-        </div>
-        <div class="input-container">
-            <label for="corEsportivo">Cor:</label>
-            <input type="text" id="corEsportivo" value="Vermelha">
-        </div>
-        <div class="input-container">
-            <label for="imagemEsportivo">Imagem URL:</label>
-            <input type="text" id="imagemEsportivo" value="OIP (1).jpg" onchange="atualizarImagem('imgEsportivo', this.value)">
-        </div>
-        <div class="button-container">
-            <button onclick="criarCarroEsportivo()">Criar/Atualizar</button>
-             <!-- Chamando interagir() -->
-            <button onclick="interagir(carroEsportivo, 'ligar')">Ligar</button>
-            <button onclick="interagir(carroEsportivo, 'desligar')">Desligar</button>
-            <button onclick="interagir(carroEsportivo, 'acelerar', 30)">Acelerar (+30)</button>
-            <button onclick="interagir(carroEsportivo, 'frear', 15)">Frear (-15)</button>
-            <button onclick="interagir(carroEsportivo, 'ativarTurbo')">Ativar Turbo</button>
-            <button onclick="interagir(carroEsportivo, 'desativarTurbo')">Desativar Turbo</button>
-            <button onclick="interagir(carroEsportivo, 'buzinar')">Buzinar</button>
-        </div>
-    </div>
+        <hr class="section-divider">
 
-    <!-- Seção Caminhão -->
-    <div class="vehicle-section">
-        <h2>Caminhão</h2>
-        <img id="imgCaminhao" src="oip2.jpg" alt="Caminhão" class="veiculo-imagem">
-        <div class="input-container">
-            <label for="modeloCaminhao">Modelo:</label>
-            <input type="text" id="modeloCaminhao" value="Scania R450">
-        </div>
-        <div class="input-container">
-            <label for="corCaminhao">Cor:</label>
-            <input type="text" id="corCaminhao" value="Branco">
-        </div>
-         <div class="input-container">
-            <label for="imagemCaminhao">Imagem URL:</label>
-            <input type="text" id="imagemCaminhao" value="oip2.jpg" onchange="atualizarImagem('imgCaminhao', this.value)">
-        </div>
-        <div class="input-container">
-            <label for="capacidadeCarga">Capacidade (kg):</label>
-            <input type="number" id="capacidadeCarga" value="25000">
-        </div>
-        <div class="input-container">
-            <label for="pesoCarga">Peso Carga/Descarga (kg):</label>
-            <input type="number" id="pesoCarga" value="5000">
-        </div>
-        <div class="button-container">
-            <button onclick="criarCaminhao()">Criar/Atualizar</button>
-             <!-- Chamando interagir() -->
-            <button onclick="interagir(caminhao, 'ligar')">Ligar</button>
-            <button onclick="interagir(caminhao, 'desligar')">Desligar</button>
-            <button onclick="interagir(caminhao, 'acelerar', 5)">Acelerar (+5)</button>
-            <button onclick="interagir(caminhao, 'frear', 5)">Frear (-5)</button>
-            <!-- Passando o valor do input no momento do clique -->
-            <button onclick="interagir(caminhao, 'carregar', document.getElementById('pesoCarga').value)">Carregar</button>
-            <button onclick="interagir(caminhao, 'descarregar', document.getElementById('pesoCarga').value)">Descarregar</button>
-            <button onclick="interagir(caminhao, 'buzinar')">Buzinar</button>
-        </div>
-    </div>
+        <!-- Gerenciamento dos Veículos (Cards) -->
+        <div class="vehicle-management-grid">
 
+            <!-- ==================== Card: Carro Comum ==================== -->
+            <section class="vehicle-section card" aria-labelledby="carro-comum-heading">
+                <header class="card-header">
+                    <h2 id="carro-comum-heading">Carro Comum</h2>
+                    <img id="imgCarro" src="OIP.jpg" alt="Carro Comum" class="veiculo-imagem">
+                </header>
+                <div class="card-body">
+                    <!-- Propriedades -->
+                    <fieldset>
+                        <legend>Propriedades</legend>
+                        <div class="input-group">
+                            <label for="modeloCarro">Modelo:</label>
+                            <input type="text" id="modeloCarro" value="Sedan">
+                        </div>
+                        <div class="input-group">
+                            <label for="corCarro">Cor:</label>
+                            <input type="text" id="corCarro" value="Cinza">
+                        </div>
+                        <div class="input-group">
+                            <label for="imagemCarro">Imagem URL:</label>
+                            <input type="text" id="imagemCarro" value="OIP.jpg" onchange="atualizarImagem('imgCarro', this.value)">
+                        </div>
+                         <div class="button-container">
+                             <button onclick="criarCarro()" class="btn btn-create">Criar/Atualizar</button>
+                         </div>
+                    </fieldset>
+
+                    <!-- Ações -->
+                    <fieldset>
+                        <legend>Ações</legend>
+                         <div class="button-container action-buttons">
+                            <button onclick="interagir(carro, 'ligar')" title="Ligar Motor" class="btn btn-action"> Ligar </button>
+                            <button onclick="interagir(carro, 'desligar')" title="Desligar Motor" class="btn btn-action"> Desligar </button>
+                            <button onclick="interagir(carro, 'acelerar', 10)" title="Acelerar +10km/h" class="btn btn-action"> Acelerar </button>
+                            <button onclick="interagir(carro, 'frear', 10)" title="Frear -10km/h" class="btn btn-action"> Frear </button>
+                            <button onclick="interagir(carro, 'buzinar')" title="Buzinar" class="btn btn-action"> Buzinar </button>
+                         </div>
+                         <div class="input-group inline-action">
+                             <label for="distanciaRodarCarro">Rodar:</label>
+                             <input type="number" id="distanciaRodarCarro" value="100" class="input-small">
+                             <span>km</span>
+                             <button onclick="interagir(carro, 'rodar', document.getElementById('distanciaRodarCarro').value)" title="Simular rodagem" class="btn btn-action"> Ir </button>
+                        </div>
+                    </fieldset>
+
+                    <!-- Manutenção -->
+                    <fieldset class="maintenance-forms">
+                        <legend>Manutenção</legend>
+                        <div class="maintenance-section registration-form">
+                            <h4>Registrar Serviço Realizado</h4>
+                             <div class="input-group"> <label for="manutTipoCarro">Tipo:</label> <input type="text" id="manutTipoCarro" placeholder="Ex: Troca de Óleo"> </div>
+                             <div class="input-group"> <label for="manutCustoCarro">Custo (R$):</label> <input type="text" id="manutCustoCarro" placeholder="Ex: 150.00"> </div>
+                             <div class="input-group"> <label for="manutDescCarro">Descrição:</label> <input type="text" id="manutDescCarro" placeholder="Opcional"> </div>
+                             <div class="button-container"> <button onclick="registrarManutencaoUI(carro, 'Carro')" class="btn btn-maintenance">Registrar Agora</button> </div>
+                        </div>
+                        <div class="maintenance-section agendamento-form">
+                            <h4>Agendar Serviço Futuro</h4>
+                            <div class="input-group"> <label for="agendamentoDataCarro">Data/Hora:</label> <input type="datetime-local" id="agendamentoDataCarro"> </div>
+                            <div class="input-group"> <label for="agendamentoTipoCarro">Tipo Serviço:</label> <input type="text" id="agendamentoTipoCarro" placeholder="Ex: Revisão Preventiva"> </div>
+                            <div class="input-group"> <label for="agendamentoDescCarro">Observações:</label> <input type="text" id="agendamentoDescCarro" placeholder="Opcional"> </div>
+                            <div class="button-container"> <button onclick="agendarManutencaoUI(carro, 'Carro')" class="btn btn-schedule">Agendar</button> </div>
+                        </div>
+                    </fieldset>
+                </div> <!-- fim .card-body -->
+            </section> <!-- fim Card Carro Comum -->
+
+            <!-- ==================== Card: Carro Esportivo ==================== -->
+            <section class="vehicle-section card" aria-labelledby="carro-esportivo-heading">
+                 <header class="card-header">
+                    <h2 id="carro-esportivo-heading">Carro Esportivo</h2>
+                    <img id="imgEsportivo" src="OIP (1).jpg" alt="Carro Esportivo" class="veiculo-imagem">
+                </header>
+                 <div class="card-body">
+                    <!-- Propriedades -->
+                    <fieldset> <legend>Propriedades</legend>
+                         <div class="input-group"> <label for="modeloEsportivo">Modelo:</label> <input type="text" id="modeloEsportivo" value="Ferrari F8"> </div>
+                         <div class="input-group"> <label for="corEsportivo">Cor:</label> <input type="text" id="corEsportivo" value="Vermelha"> </div>
+                         <div class="input-group"> <label for="imagemEsportivo">Imagem URL:</label> <input type="text" id="imagemEsportivo" value="OIP (1).jpg" onchange="atualizarImagem('imgEsportivo', this.value)"> </div>
+                         <div class="button-container"> <button onclick="criarCarroEsportivo()" class="btn btn-create">Criar/Atualizar</button> </div>
+                    </fieldset>
+                    <!-- Ações -->
+                    <fieldset> <legend>Ações</legend>
+                         <div class="button-container action-buttons">
+                            <button onclick="interagir(carroEsportivo, 'ligar')" title="Ligar Motor" class="btn btn-action"> Ligar </button>
+                            <button onclick="interagir(carroEsportivo, 'desligar')" title="Desligar Motor" class="btn btn-action"> Desligar </button>
+                            <button onclick="interagir(carroEsportivo, 'acelerar', 30)" title="Acelerar +30km/h" class="btn btn-action"> Acelerar </button>
+                            <button onclick="interagir(carroEsportivo, 'frear', 15)" title="Frear -15km/h" class="btn btn-action"> Frear </button>
+                            <button onclick="interagir(carroEsportivo, 'ativarTurbo')" title="Ativar Turbo" class="btn btn-action"> Turbo ON </button>
+                            <button onclick="interagir(carroEsportivo, 'desativarTurbo')" title="Desativar Turbo" class="btn btn-action"> Turbo OFF </button>
+                            <button onclick="interagir(carroEsportivo, 'buzinar')" title="Buzinar" class="btn btn-action"> Buzinar </button>
+                         </div>
+                          <div class="input-group inline-action">
+                             <label for="distanciaRodarEsportivo">Rodar:</label>
+                             <input type="number" id="distanciaRodarEsportivo" value="200" class="input-small">
+                             <span>km</span>
+                             <button onclick="interagir(carroEsportivo, 'rodar', document.getElementById('distanciaRodarEsportivo').value)" title="Simular rodagem" class="btn btn-action"> Ir </button>
+                         </div>
+                    </fieldset>
+                    <!-- Manutenção -->
+                     <fieldset class="maintenance-forms"> <legend>Manutenção</legend>
+                         <div class="maintenance-section registration-form"><h4>Registrar Serviço Realizado</h4>
+                            <div class="input-group"> <label for="manutTipoEsportivo">Tipo:</label> <input type="text" id="manutTipoEsportivo" placeholder="Ex: Alinhamento"> </div>
+                            <div class="input-group"> <label for="manutCustoEsportivo">Custo (R$):</label> <input type="text" id="manutCustoEsportivo" placeholder="Ex: 250.00"> </div>
+                            <div class="input-group"> <label for="manutDescEsportivo">Descrição:</label> <input type="text" id="manutDescEsportivo" placeholder="Opcional"> </div>
+                            <div class="button-container"> <button onclick="registrarManutencaoUI(carroEsportivo, 'Esportivo')" class="btn btn-maintenance">Registrar Agora</button> </div>
+                         </div>
+                         <div class="maintenance-section agendamento-form"><h4>Agendar Serviço Futuro</h4>
+                            <div class="input-group"> <label for="agendamentoDataEsportivo">Data/Hora:</label> <input type="datetime-local" id="agendamentoDataEsportivo"> </div>
+                            <div class="input-group"> <label for="agendamentoTipoEsportivo">Tipo Serviço:</label> <input type="text" id="agendamentoTipoEsportivo" placeholder="Ex: Revisão Performance"> </div>
+                            <div class="input-group"> <label for="agendamentoDescEsportivo">Observações:</label> <input type="text" id="agendamentoDescEsportivo" placeholder="Opcional"> </div>
+                            <div class="button-container"> <button onclick="agendarManutencaoUI(carroEsportivo, 'Esportivo')" class="btn btn-schedule">Agendar</button> </div>
+                         </div>
+                    </fieldset>
+                 </div> <!-- fim .card-body -->
+            </section> <!-- fim Card Carro Esportivo -->
+
+            <!-- ==================== Card: Caminhão ==================== -->
+            <section class="vehicle-section card" aria-labelledby="caminhao-heading">
+                 <header class="card-header">
+                    <h2 id="caminhao-heading">Caminhão</h2>
+                    <img id="imgCaminhao" src="oip2.jpg" alt="Caminhão" class="veiculo-imagem">
+                </header>
+                 <div class="card-body">
+                     <!-- Propriedades -->
+                    <fieldset> <legend>Propriedades</legend>
+                        <div class="input-group"> <label for="modeloCaminhao">Modelo:</label> <input type="text" id="modeloCaminhao" value="Scania R450"> </div>
+                        <div class="input-group"> <label for="corCaminhao">Cor:</label> <input type="text" id="corCaminhao" value="Branco"> </div>
+                        <div class="input-group"> <label for="imagemCaminhao">Imagem URL:</label> <input type="text" id="imagemCaminhao" value="oip2.jpg" onchange="atualizarImagem('imgCaminhao', this.value)"> </div>
+                        <div class="input-group"> <label for="capacidadeCarga">Capacidade (kg):</label> <input type="number" id="capacidadeCarga" value="25000"> </div>
+                        <div class="button-container"> <button onclick="criarCaminhao()" class="btn btn-create">Criar/Atualizar</button> </div>
+                    </fieldset>
+                    <!-- Ações -->
+                    <fieldset> <legend>Ações</legend>
+                         <div class="button-container action-buttons">
+                             <button onclick="interagir(caminhao, 'ligar')" title="Ligar Motor" class="btn btn-action"> Ligar </button>
+                             <button onclick="interagir(caminhao, 'desligar')" title="Desligar Motor" class="btn btn-action"> Desligar </button>
+                             <button onclick="interagir(caminhao, 'acelerar', 5)" title="Acelerar +5km/h" class="btn btn-action"> Acelerar </button>
+                             <button onclick="interagir(caminhao, 'frear', 5)" title="Frear -5km/h" class="btn btn-action"> Frear </button>
+                             <button onclick="interagir(caminhao, 'buzinar')" title="Buzinar" class="btn btn-action"> Buzinar </button>
+                         </div>
+                         <div class="input-group inline-action">
+                             <label for="pesoCarga">Carga/Descarga:</label>
+                             <input type="number" id="pesoCarga" value="5000" class="input-medium">
+                             <span>kg</span>
+                             <button onclick="interagir(caminhao, 'carregar', document.getElementById('pesoCarga').value)" title="Carregar" class="btn btn-action"> Carregar </button>
+                             <button onclick="interagir(caminhao, 'descarregar', document.getElementById('pesoCarga').value)" title="Descarregar" class="btn btn-action"> Descarregar </button>
+                          </div>
+                         <div class="input-group inline-action">
+                             <label for="distanciaRodarCaminhao">Rodar:</label>
+                             <input type="number" id="distanciaRodarCaminhao" value="50" class="input-small">
+                             <span>km</span>
+                            <button onclick="interagir(caminhao, 'rodar', document.getElementById('distanciaRodarCaminhao').value)" title="Simular rodagem" class="btn btn-action"> Ir </button>
+                        </div>
+                    </fieldset>
+                    <!-- Manutenção -->
+                     <fieldset class="maintenance-forms"> <legend>Manutenção</legend>
+                          <div class="maintenance-section registration-form"><h4>Registrar Serviço Realizado</h4>
+                            <div class="input-group"> <label for="manutTipoCaminhao">Tipo:</label> <input type="text" id="manutTipoCaminhao" placeholder="Ex: Troca de Pneus"> </div>
+                            <div class="input-group"> <label for="manutCustoCaminhao">Custo (R$):</label> <input type="text" id="manutCustoCaminhao" placeholder="Ex: 5000.00"> </div>
+                            <div class="input-group"> <label for="manutDescCaminhao">Descrição:</label> <input type="text" id="manutDescCaminhao" placeholder="Opcional"> </div>
+                            <div class="button-container"> <button onclick="registrarManutencaoUI(caminhao, 'Caminhao')" class="btn btn-maintenance">Registrar Agora</button> </div>
+                         </div>
+                         <div class="maintenance-section agendamento-form"><h4>Agendar Serviço Futuro</h4>
+                             <div class="input-group"> <label for="agendamentoDataCaminhao">Data/Hora:</label> <input type="datetime-local" id="agendamentoDataCaminhao"> </div>
+                             <div class="input-group"> <label for="agendamentoTipoCaminhao">Tipo Serviço:</label> <input type="text" id="agendamentoTipoCaminhao" placeholder="Ex: Revisão Freios"> </div>
+                             <div class="input-group"> <label for="agendamentoDescCaminhao">Observações:</label> <input type="text" id="agendamentoDescCaminhao" placeholder="Opcional"> </div>
+                             <div class="button-container"> <button onclick="agendarManutencaoUI(caminhao, 'Caminhao')" class="btn btn-schedule">Agendar</button> </div>
+                         </div>
+                    </fieldset>
+                 </div> <!-- fim .card-body -->
+            </section> <!-- fim Card Caminhao -->
+
+        </div> <!-- fim .vehicle-management-grid -->
+
+    </main> <!-- fim .container -->
+
+    <!-- Rodapé -->
+    <footer class="main-footer">
+        <p>Projeto Garagem Inteligente © 2024</p>
+    </footer>
+
+    <!-- Área para Notificações (JS) -->
+    <div id="notification-area" aria-live="polite"></div>
+
+    <!-- Scripts -->
     <script src="script.js"></script>
+    <!-- <script>
+        // Inicialização de libs JS (ex: Datepicker) viria aqui
+    </script> -->
+
 </body>
 </html>

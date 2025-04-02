@@ -1,227 +1,441 @@
-/* --- Estilos Base e Layout --- */
+/* ==========================================================================
+   GARAGEM INTELIGENTE PRO - ESTILOS CSS (Refatorado)
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------- */
+/*                           RESET BÁSICO & VARIÁVEIS                         */
+/* -------------------------------------------------------------------------- */
+:root {
+  /* Cores Principais */
+  --primary-color: #0056b3; /* Azul Principal (escuro) */
+  --secondary-color: #007bff; /* Azul Secundário (claro) */
+  --accent-color: #28a745; /* Verde (Sucesso, Ligado) */
+  --danger-color: #dc3545; /* Vermelho (Erro, Desligado) */
+  --warning-color: #ffc107; /* Amarelo (Aviso, Registro Manut.) */
+  --info-color: #17a2b8; /* Azul Claro (Info, Agendamento) */
+
+  /* Tons de Cinza */
+  --light-gray: #f8f9fa;  /* Fundo geral */
+  --medium-gray: #e9ecef; /* Bordas sutis, fundos secundários */
+  --dark-gray: #6c757d;   /* Texto secundário, ícones */
+  --border-color: #dee2e6; /* Cor principal de borda */
+
+  /* Cores de Texto */
+  --text-color: #343a40;
+  --text-light: #ffffff;
+  --text-muted: var(--dark-gray);
+
+  /* Sombras */
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --notification-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+
+  /* Espaçamento & Bordas */
+  --spacing-unit: 8px;
+  --card-padding: 20px;
+  --input-padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 1.25); /* 8px 10px */
+  --button-padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 1.875); /* 8px 15px */
+  --border-radius: 5px;
+  --card-border-radius: 8px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                LAYOUT GLOBAL                               */
+/* -------------------------------------------------------------------------- */
 body {
-  font-family: sans-serif;
-  text-align: center;
-  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
-  background-color: #f4f7f6;
+  background-color: var(--light-gray);
+  color: var(--text-color);
+  padding-top: var(--card-padding); /* Espaço no topo */
 }
 
-h1, h2 {
-    border-bottom: 2px solid #007bff;
-    padding-bottom: 8px;
-    margin-top: 40px;
-    margin-bottom: 25px;
-    color: #333;
-}
-h1 {
-    text-align: center;
-    color: #0056b3;
-}
-h3 {
-    margin-top: 25px;
-    color: #555;
+.container {
+  max-width: 1200px;
+  margin: 0 auto; /* Centraliza */
+  padding: 0 var(--card-padding); /* Espaçamento lateral */
 }
 
-/* --- Seção de Demonstração do Polimorfismo --- */
-#polymorphism-demo {
-    text-align: center;
-    margin-bottom: 40px;
-    padding: 25px;
-    background-color: #e9ecef;
-    border-radius: 8px;
-    border: 1px solid #ced4da;
-}
-
-/* --- Div Central de Informações --- */
-#informacoesVeiculo {
-    margin: 20px auto;
-    padding: 25px; /* Aumentado */
-    border: 1px solid #adb5bd;
-    background-color: #fff;
-    min-height: 220px; /* Aumentado para barra */
-    white-space: normal; /* MUDADO de pre-wrap para normal, pois <pre> cuidará da formatação interna */
-    text-align: left;
-    font-family: sans-serif; /* Fonte padrão aqui, o <pre> terá monoespaçada */
-    max-width: 680px; /* Um pouco mais largo */
-    border-radius: 5px;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-    color: #333;
-    transition: background-color 0.3s ease; /* Transição suave */
-    overflow: auto; /* Adiciona barra de rolagem se conteúdo exceder */
-}
-
-/* Estilo para o <pre> que contém o texto das informações */
-.info-texto {
-    margin: 0 0 10px 0; /* Margem inferior antes da barra de velocidade */
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 1em;
-    line-height: 1.7; /* Mais espaçamento */
-    color: #333;
-    white-space: pre-wrap; /* ESSENCIAL para manter a formatação do JS */
-    word-wrap: break-word;
-}
-
-
-/* --- Estilo geral para as seções dos veículos --- */
-.vehicle-section {
-  margin-bottom: 40px;
+.main-header, .main-footer {
   text-align: center;
-  padding: 25px;
-  border: 1px solid #dee2e6;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  padding: var(--card-padding);
+  margin-bottom: calc(var(--card-padding) * 1.5);
+}
+.main-header { border-bottom: 3px solid var(--primary-color); }
+.main-footer { border-top: 1px solid var(--border-color); margin-top: calc(var(--card-padding) * 2); color: var(--text-muted); font-size: 0.9em;}
+
+hr.section-divider {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, transparent, var(--dark-gray), transparent);
+  margin: calc(var(--card-padding) * 2) 0;
 }
 
-/* --- Estilos de Input e Label --- */
-.input-container {
-  margin-bottom: 15px;
+/* -------------------------------------------------------------------------- */
+/*                                 TIPOGRAFIA                                 */
+/* -------------------------------------------------------------------------- */
+h1, h2, h3, h4, legend { color: var(--primary-color); margin-bottom: calc(var(--spacing-unit) * 2); } /* 16px */
+h1 { font-size: 2.2em; margin-bottom: var(--spacing-unit); }
+h2 { font-size: 1.6em; border-bottom: 2px solid var(--secondary-color); padding-bottom: var(--spacing-unit); margin-top: calc(var(--card-padding) * 1.5); }
+h3 { font-size: 1.3em; text-align: center; color: var(--secondary-color); margin-top: var(--card-padding);}
+h4 { font-size: 1.1em; color: var(--secondary-color); border-bottom: 1px dotted var(--border-color); padding-bottom: calc(var(--spacing-unit) / 2); }
+legend { padding: 0 calc(var(--spacing-unit) * 1.25); font-weight: bold; font-size: 1.05em; }
+p { margin-bottom: var(--spacing-unit); }
+a { color: var(--secondary-color); text-decoration: none; }
+a:hover { text-decoration: underline; }
+pre { white-space: pre-wrap; word-wrap: break-word; font-family: 'Courier New', Courier, monospace; line-height: 1.7; }
+
+/* -------------------------------------------------------------------------- */
+/*                              COMPONENTES: CARDS                            */
+/* -------------------------------------------------------------------------- */
+.vehicle-management-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Colunas responsivas */
+  gap: calc(var(--card-padding) * 1.5); /* Espaço entre cards */
+}
+
+.card {
+  background-color: var(--text-light);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  overflow: hidden; /* Para conter bordas arredondadas */
 }
 
-.input-container label {
-  display: inline-block;
-  width: 170px;
-  margin-right: 10px;
+.card-header {
+  background-color: var(--primary-color);
+  color: var(--text-light);
+  padding: var(--spacing-unit) var(--card-padding);
+  text-align: center;
+}
+.card-header h2 {
+  color: inherit; /* Herda cor do header */
+  border-bottom: none;
+  margin: 0 0 calc(var(--spacing-unit) * 1.5) 0;
+  font-size: 1.4em; /* Tamanho ajustado */
+}
+
+.veiculo-imagem {
+  width: 120px;
+  height: 120px; /* Define altura igual à largura */
+  border: 3px solid var(--text-light);
+  border-radius: 50%; /* Imagem redonda */
+  margin: 0 auto calc(var(--spacing-unit) * 1.5) auto;
+  display: block;
+  object-fit: cover; /* Garante que a imagem cubra a área */
+  background-color: var(--medium-gray); /* Fundo para imagens quebradas */
+}
+
+.card-body {
+  padding: var(--card-padding);
+  flex-grow: 1; /* Ocupa espaço vertical restante */
+}
+
+/* -------------------------------------------------------------------------- */
+/*                           COMPONENTES: FORMULÁRIOS                         */
+/* -------------------------------------------------------------------------- */
+fieldset {
+  border: 1px solid var(--border-color);
+  padding: calc(var(--spacing-unit) * 2); /* 16px */
+  margin-bottom: var(--card-padding);
+  border-radius: var(--border-radius);
+}
+/* Remove margem do último fieldset no card */
+.card-body fieldset:last-child { margin-bottom: 0; }
+
+.input-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: calc(var(--spacing-unit) * 1.5); /* 12px */
+  gap: var(--spacing-unit) calc(var(--spacing-unit) * 1.25); /* 8px 10px */
+}
+
+.input-group label {
+  flex-basis: 120px; /* Largura fixa para alinhamento */
+  flex-shrink: 0; /* Não encolher */
   text-align: right;
   font-weight: 500;
-  color: #495057;
+  color: var(--text-muted);
+  padding-right: var(--spacing-unit);
 }
 
-input[type="text"],
-input[type="number"] {
-  padding: 10px;
-  width: 250px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
+.input-group input[type="text"],
+.input-group input[type="number"],
+.input-group input[type="datetime-local"],
+.input-group textarea { /* Adicionado textarea se for usar */
+  flex-grow: 1; /* Ocupa espaço restante */
+  padding: var(--input-padding);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
   font-size: 0.95em;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  min-width: 150px; /* Para não ficar muito pequeno */
 }
-input[type="text"]:focus,
-input[type="number"]:focus {
-    border-color: #80bdff;
-    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
-    outline: none;
+.input-group input:focus, .input-group textarea:focus {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+  outline: none;
+}
+.input-group span { /* Unidades (km, kg) */
+  margin-left: calc(var(--spacing-unit) / -2);
+  margin-right: var(--spacing-unit);
+  color: var(--text-muted);
 }
 
+/* Estilos para inputs menores */
+.input-small { width: 80px; flex-grow: 0 !important; }
+.input-medium { width: 100px; flex-grow: 0 !important; }
 
-/* --- Estilos de Botão --- */
+/* Ações inline (label + input + button na mesma linha) */
+.inline-action { flex-wrap: nowrap; align-items: baseline; }
+.inline-action label { flex-basis: auto; text-align: left; margin-right: var(--spacing-unit); }
+.inline-action input { margin-right: calc(var(--spacing-unit) / 2); }
+
+/* -------------------------------------------------------------------------- */
+/*                            COMPONENTES: BOTÕES                             */
+/* -------------------------------------------------------------------------- */
 .button-container {
-  margin-top: 20px;
+  margin-top: calc(var(--spacing-unit) * 2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-unit);
+  justify-content: center; /* Padrão centralizado */
 }
+.action-buttons,
+.maintenance-forms .button-container { /* Alinha botões de ação e manutenção */
+  justify-content: flex-start;
+}
+.quick-select-buttons { justify-content: center; }
 
-button {
-  padding: 10px 18px;
-  background-color: #007bff;
-  color: white;
+/* Estilo Base do Botão */
+.btn {
+  padding: var(--button-padding);
+  color: var(--text-light);
   border: none;
-  border-radius: 5px;
+  border-radius: var(--border-radius);
   cursor: pointer;
-  margin: 6px 4px;
   font-size: 0.9em;
   font-weight: 500;
-  transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  background-color: var(--secondary-color); /* Cor padrão */
+  text-align: center;
+  line-height: 1.5; /* Alinhamento vertical do texto */
 }
-
-button:hover {
-  background-color: #0056b3;
+.btn:hover {
+  opacity: 0.9;
   transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-button:active {
-    transform: translateY(0px);
-}
-
-#polymorphism-demo button {
-     background-color: #28a745;
-}
-#polymorphism-demo button:hover {
-    background-color: #218838;
+.btn:active {
+  transform: translateY(0);
+  opacity: 1;
+  box-shadow: none;
 }
 
+/* Variações de Botões */
+.btn-select { background-color: var(--dark-gray); }
+.btn-select:hover { background-color: #5a6268; }
 
-/* --- Estilos de Imagem (Nas Seções) --- */
-.veiculo-imagem {
-  width: 160px;
-  height: auto;
-  border: 3px solid #e9ecef;
-  border-radius: 8px;
-  animation: moverImagem 6s ease-in-out infinite;
-  margin: 10px auto 25px auto;
-  display: block;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+.btn-create { background-color: var(--accent-color); }
+.btn-create:hover { background-color: #218838; }
+
+.btn-action { background-color: var(--text-muted); font-size: 0.85em; padding: calc(var(--spacing-unit)*0.75) calc(var(--spacing-unit)*1.25); } /* 6px 10px */
+.btn-action:hover { background-color: #5a6268; }
+
+.btn-maintenance { background-color: var(--warning-color); color: var(--text-color); }
+.btn-maintenance:hover { background-color: #e0a800; }
+
+.btn-schedule { background-color: var(--info-color); }
+.btn-schedule:hover { background-color: #138496; }
+
+/* -------------------------------------------------------------------------- */
+/*                   COMPONENTES: PAINEL DE INFORMAÇÕES                     */
+/* -------------------------------------------------------------------------- */
+#info-display-section {
+  background-color: var(--text-light);
+  padding: var(--card-padding);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--card-shadow);
+  margin-bottom: calc(var(--card-padding) * 1.5);
+}
+#info-display-section h2 { margin-top: 0; } /* Remove margem do H2 aqui */
+
+.info-panel {
+  background-color: #fdfdff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--card-padding);
+  min-height: 250px;
+  font-size: 0.95em;
+}
+.info-panel .placeholder { color: var(--text-muted); text-align: center; font-style: italic; padding-top: 50px; }
+.info-panel .placeholder.error { color: var(--danger-color); font-style: normal; font-weight: bold;}
+
+/* Estrutura interna do painel (gerada por JS) */
+.info-header { /* Contém imagem e dados básicos */
+  padding-bottom: var(--card-padding);
+  border-bottom: 1px solid var(--medium-gray);
+  margin-bottom: var(--card-padding);
+}
+.info-header h3 { text-align: left; margin-bottom: calc(var(--spacing-unit) * 1.5); }
+
+.info-section { /* Seção de Histórico ou Agendamentos */
+  margin-bottom: var(--card-padding);
+}
+.info-section:last-child { margin-bottom: 0; }
+.info-section h4 { margin-bottom: var(--spacing-unit); font-size: 1.1em; }
+
+.info-item { margin-bottom: var(--spacing-unit); }
+.info-item strong { display: inline-block; min-width: 90px; color: var(--dark-gray); font-weight: 600;}
+
+/* Listas de Manutenção e Agendamento */
+.maintenance-list, .schedule-list {
+  list-style: none;
+  padding-left: 0;
+  max-height: 200px; /* Limita altura e adiciona scroll se necessário */
+  overflow-y: auto;
+  padding-right: calc(var(--spacing-unit) / 2); /* Espaço para scrollbar */
+}
+.maintenance-list li, .schedule-list li {
+  background-color: var(--light-gray);
+  border: 1px solid var(--border-color);
+  padding: calc(var(--spacing-unit)*0.75) var(--spacing-unit); /* 6px 8px */
+  margin-bottom: var(--spacing-unit);
+  border-radius: var(--border-radius);
+  font-size: 0.9em;
+  line-height: 1.4;
+  position: relative; /* Para pseudo-elementos se necessário */
+}
+.maintenance-list li { border-left: 4px solid var(--warning-color); } /* Borda Amarela */
+.schedule-list li { border-left: 4px solid var(--info-color); } /* Borda Azul Info */
+
+/* Status Ligado/Desligado */
+.status { font-weight: bold; padding: 2px 6px; border-radius: var(--border-radius); color: var(--text-light); font-size: 0.85em; display: inline-block; margin-left: var(--spacing-unit); vertical-align: middle; }
+.status-ligado { background-color: var(--accent-color); box-shadow: 0 0 4px rgba(40, 167, 69, 0.4); }
+.status-desligado { background-color: var(--danger-color); box-shadow: 0 0 4px rgba(220, 53, 69, 0.4); }
+
+/* Barra de Velocidade */
+.speed-bar-container { margin-top: var(--spacing-unit); padding-top: var(--spacing-unit); }
+.speed-bar-label { font-size: 0.9em; margin-bottom: calc(var(--spacing-unit)/2); color: var(--text-muted); }
+.speed-bar { width: 100%; height: 16px; background-color: var(--medium-gray); border: 1px solid var(--border-color); border-radius: calc(var(--spacing-unit) * 2); overflow: hidden; box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); }
+.speed-bar-fill { height: 100%; background-color: var(--secondary-color); background-image: linear-gradient(to bottom, #0d6efd, var(--primary-color)); border-radius: calc(var(--spacing-unit) * 2) 0 0 calc(var(--spacing-unit) * 2); transition: width 0.4s cubic-bezier(0.65, 0, 0.35, 1); }
+
+/* -------------------------------------------------------------------------- */
+/*                   COMPONENTES: SEÇÕES DE MANUTENÇÃO (Forms)              */
+/* -------------------------------------------------------------------------- */
+.maintenance-forms {
+  border-top: 2px solid var(--medium-gray);
+  margin-top: var(--card-padding);
+  padding-top: var(--card-padding);
+}
+.maintenance-section { /* Container dos forms de registro/agendamento */
+  border: 1px solid var(--medium-gray);
+  background-color: var(--light-gray);
+  padding: calc(var(--spacing-unit) * 2);
+  border-radius: var(--border-radius);
+  margin-top: var(--card-padding);
+}
+.maintenance-section:first-child { margin-top: 0; } /* Remove margem do primeiro */
+
+.maintenance-section h4 {
+  margin-top: 0;
+  margin-bottom: calc(var(--spacing-unit) * 2);
+  font-size: 1em; /* Menor que H3 */
+}
+.registration-form { border-left: 4px solid var(--warning-color); }
+.agendamento-form { border-left: 4px solid var(--info-color); }
+
+/* -------------------------------------------------------------------------- */
+/*                           COMPONENTES: NOTIFICAÇÕES                        */
+/* -------------------------------------------------------------------------- */
+#notification-area {
+  position: fixed;
+  top: calc(var(--spacing-unit) * 2);
+  right: calc(var(--spacing-unit) * 2);
+  z-index: 1050;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit);
 }
 
-@keyframes moverImagem {
-  0% { transform: translateX(0); }
-  50% { transform: translateX(15px); }
-  100% { transform: translateX(0); }
+.notification {
+  background-color: var(--text-light);
+  color: var(--text-color);
+  padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3) calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 1.5); /* Mais padding à direita para botão */
+  border-radius: var(--border-radius);
+  box-shadow: var(--notification-shadow);
+  border-left: 5px solid var(--secondary-color); /* Padrão Info */
+  opacity: 0.98;
+  position: relative;
+  animation: notificationFadeIn 0.4s ease-out;
+  font-size: 0.9em;
+  line-height: 1.5;
 }
 
-/* --- !! NOVOS ESTILOS para Feedback Visual !! --- */
+.notification.notification-warning { border-left-color: var(--warning-color); background-color: #fffbee; }
+.notification.notification-error { border-left-color: var(--danger-color); background-color: #fdf1f2; }
+.notification.notification-success { border-left-color: var(--accent-color); background-color: #f0fff4; }
 
-/* Status Ligado/Desligado (Dentro da div #informacoesVeiculo) */
-.status {
-    font-weight: bold;
-    padding: 3px 8px;
-    border-radius: 5px;
-    color: white;
-    font-size: 0.9em;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-    display: inline-block;
-    margin-left: 5px;
+.notification .close-btn {
+  position: absolute;
+  top: calc(var(--spacing-unit) / 2);
+  right: var(--spacing-unit);
+  background: none;
+  border: none;
+  font-size: 1.4em; /* Maior para facilitar clique */
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+.notification .close-btn:hover { color: var(--text-color); }
+
+@keyframes notificationFadeIn {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 0.98; transform: translateX(0); }
 }
 
-.status-ligado {
-    background-color: #28a745; /* Verde */
-    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+/* -------------------------------------------------------------------------- */
+/*                                MEDIA QUERIES                               */
+/* -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .vehicle-management-grid {
+      grid-template-columns: 1fr; /* Uma coluna */
+  }
+  .input-group {
+      flex-direction: column; /* Empilha label e input */
+      align-items: stretch;
+  }
+  .input-group label {
+      text-align: left; /* Alinha label à esquerda */
+      margin-bottom: calc(var(--spacing-unit) / 2);
+      flex-basis: auto; /* Remove largura fixa */
+      padding-right: 0;
+  }
+  .button-container { justify-content: center; } /* Centraliza botões */
+  .inline-action { flex-wrap: wrap; } /* Permite quebrar linha em ações inline */
+
+   #notification-area {
+      width: calc(100% - var(--card-padding) * 2); /* Ocupa quase toda largura */
+      right: var(--card-padding);
+      left: var(--card-padding);
+  }
 }
 
-.status-desligado {
-    background-color: #dc3545; /* Vermelho */
-    box-shadow: 0 0 5px rgba(220, 53, 69, 0.5);
-}
-
-/* Barra de Velocidade (Dentro da div #informacoesVeiculo) */
-.speed-bar-container {
-    margin-top: 15px;
-    padding-top: 10px;
-    border-top: 1px dashed #ccc;
-}
-
-.speed-bar-label {
-    font-size: 0.9em;
-    margin-bottom: 5px;
-    color: #444;
-    text-align: left;
-    font-weight: 500;
-    /* Usa a fonte padrão, não monoespaçada */
-    font-family: sans-serif;
-}
-
-.speed-bar {
-    width: 100%;
-    height: 18px;
-    background-color: #e9ecef;
-    border: 1px solid #ced4da;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.speed-bar-fill {
-    height: 100%;
-    background-color: #0d6efd; /* Azul */
-    background-image: linear-gradient(to bottom, #0d6efd, #0a58ca);
-    /* Arredonda só a ponta que aparece */
-    border-top-left-radius: 7px;
-    border-bottom-left-radius: 7px;
-    /* A ANIMAÇÃO! */
-    transition: width 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+@media (max-width: 480px) {
+  h1 { font-size: 1.8em; }
+  h2 { font-size: 1.4em; }
+  .card-header h2 { font-size: 1.2em; }
+  .btn { font-size: 0.85em; padding: calc(var(--spacing-unit)*0.9) calc(var(--spacing-unit)*1.5); }
+  .veiculo-imagem { width: 100px; height: 100px;}
 }
