@@ -33,8 +33,18 @@ Object.entries(soundMap).forEach(([key, sound]) => {
 //                                  CLASSES
 // ==========================================================================
 
-// --- Classe Manutencao ---
+/**
+ * @class Manutencao
+ * Representa um registro de manutenção, que pode ser um serviço passado ou um agendamento futuro.
+ */
 class Manutencao {
+    /**
+     * Cria uma instância de Manutencao.
+     * @param {Date} data - A data e hora em que a manutenção foi realizada ou está agendada.
+     * @param {string} tipo - O tipo de serviço (ex: "Troca de Óleo").
+     * @param {number} custo - O custo do serviço. Para agendamentos, pode ser 0.
+     * @param {string} [descricao=''] - Uma descrição opcional do serviço.
+     */
     constructor(data, tipo, custo, descricao = '') {
         if (!(data instanceof Date) || isNaN(data.getTime())) throw new Error("Data inválida (Manutencao).");
         if (typeof tipo !== 'string' || tipo.trim() === '') throw new Error("Tipo obrigatório (Manutencao).");
@@ -46,6 +56,10 @@ class Manutencao {
         this.descricao = descricao.trim();
     }
 
+    /**
+     * Formata os detalhes da manutenção em uma string legível.
+     * @returns {string} Uma string descrevendo a manutenção. Ex: "Troca de Óleo em 20/08/2025 - R$ 150,00".
+     */
     getDetalhesFormatados() {
         const dataFormatada = this.data.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
         const custoFormatado = this.custo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -54,6 +68,11 @@ class Manutencao {
         return detalhes;
     }
 
+    /**
+     * Cria uma instância de Manutencao a partir de um objeto plano (geralmente vindo de JSON).
+     * @param {object} obj - O objeto com os dados da manutenção.
+     * @returns {Manutencao|null} A nova instância de Manutencao ou null se os dados forem inválidos.
+     */
     static fromPlainObject(obj) {
         if (!obj || !obj.data || !obj.tipo || typeof obj.custo === 'undefined') {
             console.error("Dados insuficientes/inválidos para recriar Manutencao:", obj); return null;
@@ -68,31 +87,98 @@ class Manutencao {
     }
 }
 
-// --- Classe Veiculo (Base) ---
+/**
+ * @class Veiculo
+ * Representa a base para qualquer veículo na garagem.
+ * Contém propriedades e métodos comuns a todos os veículos.
+ */
 class Veiculo {
+    /**
+     * Cria uma instância de Veiculo.
+     * @param {string} modelo - O modelo do veículo (ex: "Sedan").
+     * @param {string} cor - A cor do veículo.
+     * @param {string} imagem - A URL para a imagem do veículo.
+     */
     constructor(modelo, cor, imagem) {
         this.modelo = modelo;
         this.cor = cor;
         this.imagem = imagem;
         this.ligado = false;
     }
+    /**
+     * Tenta ligar o motor do veículo.
+     * @returns {boolean} True se o veículo foi ligado com sucesso, false caso já estivesse ligado.
+     */
     ligar() { if (!this.ligado) { this.ligado = true; return true; } return false; }
+
+    /**
+     * Tenta desligar o motor do veículo. Só funciona se o veículo estiver parado.
+     * @returns {boolean} True se o veículo foi desligado com sucesso, false caso contrário (ex: em movimento).
+     */
     desligar() { const v = typeof this.velocidade === 'number' ? this.velocidade : 0; if (this.ligado && v <= 0) { this.ligado = false; return true; } if (v > 0) alert(`Não desligar ${this.modelo} em movimento (V: ${v} km/h).`); return false; }
-    buzinar() { return true; } // Som tratado fora
+    
+    /**
+     * Aciona a buzina do veículo. A reprodução do som é tratada externamente.
+     * @returns {boolean} Sempre retorna true para indicar que a ação foi chamada.
+     */
+    buzinar() { return true; } 
+    
+    /**
+     * Retorna uma string com informações básicas do veículo.
+     * @returns {string} Informações formatadas de modelo, cor e status (ligado/desligado).
+     */
     exibirInformacoesBase() { const s = this.ligado ? 'Ligado' : 'Desligado'; return `Mod: ${this.modelo}, Cor: ${this.cor}, Status: ${s}`; }
 }
 
-// --- Classe Carro ---
+
+/**
+ * @class Carro
+ * @extends Veiculo
+ * Representa um carro comum, herdando de Veiculo e adicionando
+ * funcionalidades como velocidade, quilometragem e gerenciamento de manutenções.
+ */
 class Carro extends Veiculo {
+    /**
+     * Cria uma instância de Carro.
+     * @param {string} modelo - O modelo do carro.
+     * @param {string} cor - A cor do carro.
+     * @param {string} imagem - A URL para a imagem do carro.
+     */
     constructor(modelo, cor, imagem) {
         super(modelo, cor, imagem);
         this.velocidade = 0; this.maxVelocidade = 180; this.quilometragem = 0;
         /** @type {Manutencao[]} */ this.historicoManutencoes = [];
     }
+
+    /**
+     * Aumenta a velocidade do carro.
+     * @param {number} [inc=10] - O incremento de velocidade em km/h.
+     * @returns {boolean} True se a aceleração foi bem-sucedida, false caso contrário.
+     */
     acelerar(inc = 10) { const n = Number(inc); if(isNaN(n)||n<=0||!this.ligado) { if (!this.ligado) alert(`Ligue ${this.modelo}`); return false; } if (this.velocidade >= this.maxVelocidade) { alert(`Max vel (${this.maxVelocidade})`); return false; } this.velocidade = Math.min(this.velocidade + n, this.maxVelocidade); return true; }
+    
+    /**
+     * Diminui a velocidade do carro.
+     * @param {number} [dec=10] - O decremento de velocidade em km/h.
+     * @returns {boolean} True se a frenagem foi bem-sucedida, false se o carro já estiver parado.
+     */
     frear(dec = 10) { const n = Number(dec); if(isNaN(n)||n<=0||this.velocidade===0) return false; this.velocidade = Math.max(0, this.velocidade - n); return true; }
+    
+    /**
+     * Simula o carro rodando uma certa distância, aumentando a quilometragem.
+     * @param {number} distancia - A distância a ser percorrida em km.
+     * @returns {boolean} True se a simulação foi bem-sucedida, false se o carro estiver desligado ou a distância for inválida.
+     */
     rodar(distancia) { const dist = Number(distancia); if(isNaN(dist)||dist<=0) { alert("Distância inválida."); return false; } if (!this.ligado) { alert(`${this.modelo} precisa estar ligado.`); return false; } this.quilometragem += dist; return true; }
 
+    /**
+     * Adiciona um novo registro de manutenção (passado ou futuro) ao histórico do carro.
+     * @param {Date} data - A data do serviço/agendamento.
+     * @param {string} tipo - O tipo de serviço.
+     * @param {number} custo - O custo do serviço.
+     * @param {string} [descricao=''] - Descrição opcional.
+     * @returns {boolean} True se o registro foi adicionado com sucesso, false em caso de erro.
+     */
     registrarManutencao(data, tipo, custo, descricao = '') {
         try {
             const novaManutencao = new Manutencao(data, tipo, custo, descricao);
@@ -102,13 +188,21 @@ class Carro extends Veiculo {
         } catch (error) { console.error(`Erro Manut: ${error.message}`); alert(`Erro Manut: ${error.message}`); return false; }
     }
 
-    // Métodos que retornam DADOS (arrays filtrados e ordenados)
+    /**
+     * Retorna uma lista de manutenções já realizadas, ordenadas da mais recente para a mais antiga.
+     * @returns {Manutencao[]} Um array com as manutenções passadas.
+     */
     getPastMaintenances() {
         const agora = new Date();
         return this.historicoManutencoes
             .filter(m => m.data <= agora)
             .sort((a, b) => b.data.getTime() - a.data.getTime()); // Reordena por segurança
     }
+    
+    /**
+     * Retorna uma lista de manutenções futuras (agendamentos), ordenadas da mais próxima para a mais distante.
+     * @returns {Manutencao[]} Um array com os agendamentos futuros.
+     */
     getFutureMaintenances() {
         const agora = new Date();
         return this.historicoManutencoes
@@ -117,21 +211,90 @@ class Carro extends Veiculo {
     }
 }
 
-// --- Classe CarroEsportivo ---
+
+/**
+ * @class CarroEsportivo
+ * @extends Carro
+ * Representa um carro esportivo com maior velocidade máxima e funcionalidade de turbo.
+ */
 class CarroEsportivo extends Carro {
+    /**
+     * Cria uma instância de CarroEsportivo.
+     * @param {string} modelo - O modelo do carro esportivo.
+     * @param {string} cor - A cor do carro esportivo.
+     * @param {string} imagem - A URL para a imagem do carro esportivo.
+     */
     constructor(modelo, cor, imagem) { super(modelo, cor, imagem); this.turboAtivado = false; this.maxVelocidade = 350; }
+    
+    /**
+     * Aumenta a velocidade do carro. Se o turbo estiver ativado, o incremento é maior.
+     * @param {number} [inc=25] - O incremento base de velocidade em km/h.
+     * @returns {boolean} True se a aceleração foi bem-sucedida.
+     */
     acelerar(inc = 25) { const n = Number(inc); if(isNaN(n)||n<=0||!this.ligado) { if (!this.ligado) alert(`Ligue ${this.modelo}`); return false; } if (this.velocidade >= this.maxVelocidade) { alert(`Max vel (${this.maxVelocidade})`); return false; } const boost = this.turboAtivado ? n * 1.8 : n; this.velocidade = Math.min(this.velocidade + boost, this.maxVelocidade); return true; }
+    
+    /**
+     * Diminui a velocidade do carro.
+     * @param {number} [dec=15] - O decremento de velocidade em km/h.
+     * @returns {boolean} True se a frenagem foi bem-sucedida.
+     */
     frear(dec = 15) { return super.frear(dec); }
+    
+    /**
+     * Ativa o modo turbo do carro, se estiver ligado.
+     * @returns {boolean} True se o turbo foi ativado com sucesso.
+     */
     ativarTurbo() { if(this.ligado && !this.turboAtivado){ this.turboAtivado=true; return true;} if (!this.ligado) alert("Ligue o carro!"); else alert("Turbo já ON"); return false; }
+    
+    /**
+     * Desativa o modo turbo.
+     * @returns {boolean} True se o turbo foi desativado com sucesso.
+     */
     desativarTurbo() { if(this.turboAtivado){ this.turboAtivado=false; return true;} alert("Turbo já OFF"); return false; }
 }
 
-// --- Classe Caminhao ---
+
+/**
+ * @class Caminhao
+ * @extends Carro
+ * Representa um caminhão com capacidade de carga, que afeta sua aceleração.
+ */
 class Caminhao extends Carro {
+    /**
+     * Cria uma instância de Caminhao.
+     * @param {string} modelo - O modelo do caminhão.
+     * @param {string} cor - A cor do caminhão.
+     * @param {number} cap - A capacidade máxima de carga em kg.
+     * @param {string} img - A URL para a imagem do caminhão.
+     */
     constructor(modelo, cor, cap, img) { super(modelo, cor, img); this.capacidadeCarga = Number(cap) || 0; this.cargaAtual = 0; this.maxVelocidade = 120; }
+    
+    /**
+     * Aumenta a velocidade do caminhão. A aceleração é reduzida com base na carga atual.
+     * @param {number} [inc=5] - O incremento base de velocidade em km/h.
+     * @returns {boolean} True se a aceleração foi bem-sucedida.
+     */
     acelerar(inc = 5) { const n = Number(inc); if(isNaN(n)||n<=0||!this.ligado) { if (!this.ligado) alert(`Ligue ${this.modelo}`); return false; } if (this.velocidade >= this.maxVelocidade) { alert(`Max vel (${this.maxVelocidade})`); return false; } const f = this.capacidadeCarga > 0 ? 1 - (this.cargaAtual / (this.capacidadeCarga * 2)) : 1; const boost = n * Math.max(0.3, f); this.velocidade = Math.min(this.velocidade + boost, this.maxVelocidade); return true; }
+    
+    /**
+     * Diminui a velocidade do caminhão.
+     * @param {number} [dec=5] - O decremento de velocidade em km/h.
+     * @returns {boolean} True se a frenagem foi bem-sucedida.
+     */
     frear(dec = 5) { return super.frear(dec); }
+    
+    /**
+     * Adiciona peso à carga atual do caminhão.
+     * @param {number} peso - O peso a ser carregado em kg.
+     * @returns {boolean} True se a carga foi adicionada com sucesso.
+     */
     carregar(peso) { const p = Number(peso); if (isNaN(p) || p <= 0) { alert("Peso inválido."); return false; } if (this.cargaAtual + p > this.capacidadeCarga) { alert(`Carga excedida (Max:${this.capacidadeCarga}, Atual:${this.cargaAtual})`); return false; } this.cargaAtual += p; return true; }
+    
+    /**
+     * Remove peso da carga atual do caminhão.
+     * @param {number} peso - O peso a ser descarregado em kg.
+     * @returns {boolean} True se a descarga foi realizada com sucesso.
+     */
     descarregar(peso) { const p = Number(peso); if (isNaN(p) || p <= 0) { alert("Peso inválido."); return false; } if (p > this.cargaAtual) { alert(`Descarregar ${p}kg? Só tem ${this.cargaAtual}kg`); return false; } this.cargaAtual -= p; return true; }
 }
 
@@ -451,6 +614,9 @@ function mostrarInformacoes(vehicle) {
 
 /**
  * Exibe uma notificação não bloqueante na tela.
+ * @param {string} message - A mensagem a ser exibida.
+ * @param {'info' | 'success' | 'warning' | 'error'} [type='info'] - O tipo de notificação, que afeta sua cor.
+ * @param {number} [duration=5000] - A duração em milissegundos. Se 0, a notificação persiste até ser fechada.
  */
 function showNotification(message, type = 'info', duration = 5000) {
     if (!notificationArea) { console.warn("Área de notificação não encontrada."); return; }
@@ -468,6 +634,7 @@ function showNotification(message, type = 'info', duration = 5000) {
 
 /**
  * Verifica agendamentos futuros e mostra notificações de lembrete.
+ * @param {Veiculo} veiculo - A instância do veículo a ser verificado.
  */
 function verificarAgendamentosProximos(veiculo) {
     if (!veiculo || !veiculo.getFutureMaintenances) return; // Verifica se o método existe
@@ -506,7 +673,8 @@ function verificarAgendamentosProximos(veiculo) {
 }
 
 /**
- * Função auxiliar para tocar sons.
+ * Função auxiliar para tocar sons de forma segura.
+ * @param {HTMLAudioElement} audioObject - A instância do áudio a ser tocado.
  */
 function playSound(audioObject) {
     if (!audioObject || !(audioObject instanceof Audio)) return;
@@ -520,6 +688,8 @@ function playSound(audioObject) {
 
 /**
  * Decide qual som tocar baseado na ação e tipo de veículo.
+ * @param {Veiculo} veiculo - A instância do veículo.
+ * @param {string} acao - A ação realizada (ex: 'ligar', 'buzinar').
  */
 function tocarSomCorrespondente(veiculo, acao) {
     let soundToPlay = null;
@@ -538,7 +708,9 @@ function tocarSomCorrespondente(veiculo, acao) {
 }
 
 /**
- * Atualiza o atributo 'src' e o fallback de erro de um elemento <img>.
+ * Atualiza o atributo 'src' de um elemento <img> e define um fallback de erro.
+ * @param {string} imgId - O ID do elemento <img> a ser atualizado.
+ * @param {string} novaUrl - A nova URL da imagem.
  */
 function atualizarImagem(imgId, novaUrl) {
     const imgElement = document.getElementById(imgId);
@@ -552,7 +724,8 @@ function atualizarImagem(imgId, novaUrl) {
 }
 
 /**
- * Preenche os campos de input na UI com os dados de um veículo carregado.
+ * Preenche os campos de input na UI com os dados de um veículo carregado do LocalStorage.
+ * @param {Veiculo} veiculo - A instância do veículo carregado.
  */
 function atualizarUIComVeiculoCarregado(veiculo) {
     let prefixoId = '';
@@ -574,6 +747,9 @@ function atualizarUIComVeiculoCarregado(veiculo) {
 /**
  * Função central para interagir com os veículos. Chama o método apropriado,
  * atualiza a UI, toca som e salva no LocalStorage se necessário.
+ * @param {Veiculo} veiculo - A instância do veículo com a qual interagir.
+ * @param {string} acao - O nome do método a ser chamado no objeto do veículo.
+ * @param {...*} args - Argumentos a serem passados para o método.
  * @returns {boolean} True se a ação foi bem-sucedida, false caso contrário.
  */
 function interagir(veiculo, acao, ...args) {
@@ -702,4 +878,3 @@ document.getElementById('btnInfoCaminhao')?.addEventListener('click', () => most
 // --- Carregar Dados ao Iniciar ---
 window.addEventListener('load', carregarVeiculosDoLocalStorage);
 
-// --- FIM DO SCRIPT ---
