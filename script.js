@@ -878,3 +878,73 @@ document.getElementById('btnInfoCaminhao')?.addEventListener('click', () => most
 // --- Carregar Dados ao Iniciar ---
 window.addEventListener('load', carregarVeiculosDoLocalStorage);
 
+// --- FIM DO SCRIPT ---
+
+// ==========================================================================
+//                      API DE PREVISÃO DO TEMPO (NOVA SEÇÃO)
+// ==========================================================================
+
+// ATENÇÃO: AVISO DE SEGURANÇA IMPORTANTE!
+// A chave de API (apiKey) está exposta diretamente no código do frontend (client-side).
+// Isso NUNCA deve ser feito em um projeto de produção real.
+// Em um ambiente real, a chave de API deve ser mantida em um servidor backend,
+// e o frontend faria chamadas para esse seu servidor, que por sua vez se comunicaria
+// com a API do OpenWeatherMap. Expor a chave no frontend permite que qualquer
+// pessoa a veja e a utilize indevidamente, podendo gerar custos e violações de segurança.
+// Para este exercício de aprendizado, a chave será mantida aqui temporariamente.
+const OPENWEATHER_API_KEY = "a4b91edb43b56e2c8d7530b1e307e44d"; // <-- SUBSTITUA PELA SUA CHAVE REAL
+
+/**
+ * Busca a previsão do tempo atual para uma cidade específica usando a API do OpenWeatherMap.
+ * @param {string} nomeCidade - O nome da cidade para a qual buscar a previsão.
+ * @returns {Promise<object>} Um objeto contendo os dados formatados da previsão do tempo.
+ * @throws {Error} Lança um erro se a cidade não for encontrada, a chave da API for inválida ou ocorrer um erro de rede.
+ */
+async function buscarPrevisaoTempo(nomeCidade) {
+    // Validação básica da entrada
+    if (!nomeCidade || typeof nomeCidade !== 'string' || nomeCidade.trim() === '') {
+        throw new Error('Nome da cidade é inválido.');
+    }
+
+    // AVISO: Em produção, a chave da API nunca deve estar no frontend.
+    if (OPENWEATHER_API_KEY === "SUA_CHAVE_COPIADA_AQUI") {
+         throw new Error('A chave da API do OpenWeatherMap não foi configurada. Edite o arquivo script.js.');
+    }
+
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(nomeCidade)}&appid=${OPENWEATHER_API_KEY}&units=metric&lang=pt_br`;
+
+    try {
+        const response = await fetch(url);
+
+        // Se a resposta não for bem-sucedida (ex: 404, 401), trata como um erro
+        if (!response.ok) {
+            const errorData = await response.json(); // Tenta ler a mensagem de erro da API
+            // A API do OpenWeather retorna uma mensagem no campo 'message'
+            throw new Error(errorData.message || `Erro HTTP: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Extrai e formata os dados relevantes
+        const dadosFormatados = {
+            cidade: data.name,
+            pais: data.sys.country,
+            temperatura: data.main.temp,
+            sensacao: data.main.feels_like,
+            tempMin: data.main.temp_min,
+            tempMax: data.main.temp_max,
+            umidade: data.main.humidity,
+            descricao: data.weather[0].description,
+            icone: data.weather[0].icon, // Código do ícone para montar a URL da imagem
+        };
+
+        return dadosFormatados;
+
+    } catch (error) {
+        // Loga o erro original no console para depuração
+        console.error('Erro detalhado ao buscar previsão do tempo:', error);
+        
+        // Relança um erro mais amigável para a UI, mantendo a mensagem original da API
+        throw new Error(error.message);
+    }
+}

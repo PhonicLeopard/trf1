@@ -40,6 +40,33 @@
 
         <hr class="section-divider">
 
+        <!-- ==================== Planejador de Viagem (NOVA SEÇÃO) ==================== -->
+        <section id="trip-planner-section" class="card" aria-labelledby="trip-planner-heading">
+            <header class="card-header">
+                <h2 id="trip-planner-heading">Planejar Viagem 🌎</h2>
+            </header>
+            <div class="card-body">
+                <p>Verifique a previsão do tempo para a sua cidade de destino antes de pegar a estrada.</p>
+                <fieldset>
+                    <legend>Consulta de Clima</legend>
+                    <div class="input-group">
+                        <label for="destino-viagem">Destino:</label>
+                        <input type="text" id="destino-viagem" placeholder="Digite a cidade de destino">
+                    </div>
+                    <div class="button-container">
+                        <button id="verificar-clima-btn" class="btn btn-schedule">Verificar Clima</button>
+                    </div>
+                </fieldset>
+                
+                <div id="previsao-tempo-resultado">
+                    <!-- Resultados da previsão do tempo aparecerão aqui -->
+                </div>
+            </div>
+        </section>
+        
+        <hr class="section-divider">
+
+
         <!-- Gerenciamento dos Veículos (Cards) -->
         <div class="vehicle-management-grid">
 

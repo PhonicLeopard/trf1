@@ -107,6 +107,7 @@ pre { white-space: pre-wrap; word-wrap: break-word; font-family: 'Courier New', 
   display: flex;
   flex-direction: column;
   overflow: hidden; /* Para conter bordas arredondadas */
+  height: 100%; /* Garante que todos os cards na mesma linha tenham a mesma altura */
 }
 
 .card-header {
@@ -194,9 +195,14 @@ fieldset {
 .input-medium { width: 100px; flex-grow: 0 !important; }
 
 /* Ações inline (label + input + button na mesma linha) */
-.inline-action { flex-wrap: nowrap; align-items: baseline; }
-.inline-action label { flex-basis: auto; text-align: left; margin-right: var(--spacing-unit); }
-.inline-action input { margin-right: calc(var(--spacing-unit) / 2); }
+.inline-action {
+    display: flex; /* Adicionado para garantir o comportamento flex */
+    flex-wrap: wrap; /* BUG FIX: Alterado de 'nowrap' para 'wrap' para permitir quebra de linha em telas pequenas */
+    align-items: baseline;
+    gap: var(--spacing-unit); /* Adiciona um espaçamento consistente entre os itens */
+}
+.inline-action label { flex-basis: auto; text-align: left; margin-right: 0; } /* Ajustes para melhor alinhamento */
+.inline-action input { margin-right: 0; }
 
 /* -------------------------------------------------------------------------- */
 /*                            COMPONENTES: BOTÕES                             */
@@ -438,4 +444,25 @@ fieldset {
   .card-header h2 { font-size: 1.2em; }
   .btn { font-size: 0.85em; padding: calc(var(--spacing-unit)*0.9) calc(var(--spacing-unit)*1.5); }
   .veiculo-imagem { width: 100px; height: 100px;}
+}
+
+/* -------------------------------------------------------------------------- */
+/*                      ESTILOS PARA NOVOS COMPONENTES (Planner)              */
+/* -------------------------------------------------------------------------- */
+#previsao-tempo-resultado {
+    border: 1px solid var(--border-color);
+    background-color: var(--light-gray);
+    margin-top: var(--card-padding);
+    padding: calc(var(--spacing-unit) * 2);
+    border-radius: var(--border-radius);
+    min-height: 100px;
+}
+
+#previsao-tempo-resultado:empty::before {
+  content: 'A previsão do tempo para o seu destino será exibida aqui.';
+  color: var(--text-muted);
+  font-style: italic;
+  display: block;
+  text-align: center;
+  padding-top: 20px;
 }
